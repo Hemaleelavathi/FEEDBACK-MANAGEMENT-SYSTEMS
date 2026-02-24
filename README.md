@@ -1,1 +1,92 @@
 # FEEDBACK-MANAGEMENT-SYSTEMS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define FILE_NAME "feedback.txt"
+struct Feedback {
+char name[50];
+char message[200];
+int rating;
+};
+void addFeedback() {
+FILE *fp;
+struct Feedback f;
+fp = fopen(FILE_NAME, "a");
+if (fp == NULL) {
+printf("Error opening file!\n");
+return;
+}
+printf("Enter your name: ");
+getchar();
+fgets(f.name, sizeof(f.name), stdin);
+printf("Enter your feedback message: ");
+fgets(f.message, sizeof(f.message), stdin);
+printf("Enter rating (1-5): ");
+scanf("%d", &f.rating);
+fprintf(fp, "Name: %sMessage: %sRating: %d\n-------------------\n",
+f.name, f.message, f.rating);
+fclose(fp);
+printf("Feedback submitted successfully!\n");
+}
+
+void viewFeedback() {
+FILE *fp;
+char ch;
+fp = fopen(FILE_NAME, "r");
+if (fp == NULL) {
+printf("No feedback available.\n");
+return;
+}
+printf("\n----- All Feedback -----\n");
+while ((ch = fgetc(fp)) != EOF) {
+putchar(ch);
+}
+fclose(fp);
+}
+void countFeedback() {
+FILE *fp;
+char line[300];
+int count = 0;
+fp = fopen(FILE_NAME, "r");
+if (fp == NULL) {
+printf("No feedback available.\n");
+return;
+}
+while (fgets(line, sizeof(line), fp)) {
+if (strstr(line, "Name:") != NULL) {
+count++;
+}
+}
+fclose(fp);
+printf("Total Feedback Entries: %d\n", count);
+}
+int main() {
+
+int choice;
+while (1) {
+printf("\n===== Feedback System =====\n");
+printf("1. Add Feedback\n");
+printf("2. View Feedback\n");
+printf("3. Count Feedback\n");
+printf("4. Exit\n");
+printf("Enter your choice: ");
+scanf("%d", &choice);
+switch (choice) {
+case 1:
+addFeedback();
+break;
+case 2:
+viewFeedback();
+break;
+case 3:
+countFeedback();
+break;
+case 4:
+printf("Exiting program...\n");
+exit(0);
+default:
+printf("Invalid choice! Try again.\n");
+}
+}
+return 0;
+}
